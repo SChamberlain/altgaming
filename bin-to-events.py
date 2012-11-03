@@ -15,18 +15,21 @@ def read_data(file): # get the data from a local csv file
 
 def un_cumulate_bins(cumulate_bins):
 	# for data that is cumulative, convert it into bins
-	un_cumulated = []
+	instance_bins = []
 	current_value = 0
 	last_value = 0
 	for x in cumulate_bins:
 		delta = int(x) - int(last_value)
 		last_value = x 
-		un_cumulated.append(delta)
-	return un_cumulated
+		instance_bins.append(delta)
+	return instance_bins
 
 def bins_to_instances(instance_bins):
+	instances = []
+	for bin in instance_bins
 	return instance_stream
 
 points = read_data(test_file)
-un_cumulated = un_cumulate_bins(points)
-print un_cumulated
+instance_bins = un_cumulate_bins(points)
+print instance_bins
+instances = bins_to_instances(instance_bins)
