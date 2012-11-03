@@ -26,9 +26,9 @@ def un_cumulate_bins(cumulate_bins):
 
 def bins_to_instances(instance_bins):
 	instances = []
-	for bin in instance_bins
-	return instance_stream
-
+	for bin in instance_bins:
+		print bin
+		
 points = read_data(test_file)
 instance_bins = un_cumulate_bins(points)
 print instance_bins
