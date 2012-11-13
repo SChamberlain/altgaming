@@ -36,20 +36,82 @@
         <span class="blc"></span><span class="trc"></span>
         </div>
         <article class="markdown-body">
-          <h3>Welcome to GitHub Pages.</h3>
+<h1 id='altgaming__aka__bat_signal'>AltGaming - AKA - Bat Signal</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<h2 id='alm12_hackathon'>ALM12 hackathon.</h2>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>As part of the <span>ALM12</span> workshop there was a one day hackathon on the Saturday, hosted by <a href='http://www.plos.org/'>PLOS</a> at their offices in San Francisco. A number of pretty cool hacks came out of the workshop, and a <a href='https://sites.google.com/site/altmetricsworkshop/altmetrics-hackathon?pli=1'>general overview</a> has been posted. These notes are mirrored there too.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h2 id='background_to_our_hack'>Background to our hack.</h2>
+
+<p>One of the topics that got quite a bit of discussion at the workshop was the topic of gaming of ALMs. We are still in a domain with respect to ALMs that gaming has not become a serious issues. Over the course of the meeting only one specific example of gaming of pdf downloads, wrt to <a href='http://www.ssrn.com/'>SSRN</a> was alluded to. Nonetheless, as more people discuss ALMs the question on what to do about them comes up every now and again. In the session during the workshop we came up with 6 strong technical ideas for addressing this issue. Probably the biggest insight in the workshop was that for consumers of ALMs, such as funders, all they want to know is that the data you are providing is reliable. It&#8217;s probably even better to not even mention gaming, one should simply be in a position to be able to give assurances around data quality.</p>
+<img height='50%' src='https://lh6.googleusercontent.com/-LAFN-sdiADQ/UJdEX3WDWdI/AAAAAAAAqGM/ucbIQhRv3jw/s1063/20121101-IMG_2926.jpg' />
+<p>The 6 technical ideas that came out of the workshop were:</p>
+
+<ol>
+<li>UK - 3rd party (I have no idea what that means)</li>
+
+<li>Provide provenance, and the ability for consumers to run the data themselves</li>
+
+<li>Crowdsource detection of fraud</li>
+
+<li>Have proprietary anti-gaming strategies, so cheaters don&#8217;t know how to cheat.</li>
+
+<li>Look for trend and event detection algorithms that could signal the possibility of something dodgy.</li>
+
+<li>Create a shared blacklist amongst ALM providers.</li>
+</ol>
+
+<p>It was also suggested that in terms of strategies for looking for problems in the data, we should do the simplest dumbest thing first. We might also organise a hackathon specifically pitching one team against another, with one team out to break some metric, and the other team set to defend the metric, as a way of stress testing the system.</p>
+
+<p>When it came to the day of the hackathon there were enough people interested in the general topic that we decided to have a go at something. We only had a few hours, so we decided to pick a simple atomic example of trying to find a signal in the data. There was a lot of discussion around whether this would be useful, if we didn&#8217;t initially know what that signal would represent, and that is a fair point, however there was sufficient interest to give it a go.</p>
+
+<p>The idea is that changes in altmetrics activity express the changing levels of interest in a research artefact. The specific pattern of activity depends on the metric being considered (e.g., journal page views, Tweets, bookmark, etc.). Spikes in activity are of interest as they may indicate either sudden interest in a paper (e.g., mainstream news coverage, prize awarded to an author) or manipulation of metrics (i.e., gaming). We wanted to get some data, apply a tool suitable for detecting a signal, and show that such a tool could be used with altmetric data. We were then going to visualise the events. We felt that a working demo could be extended to a more generally applicable tool for the whole ALM community.</p>
+
+<h2 id='what_we_did'>What we did.</h2>
+
+<p>To begin, we packaged the data to construct time sequence vectors for each of our sample articles, a subset of 2000 articles in the PLOS corpus. We then identified a set of possible approaches to evaluate the data: hidden or semi-hidden Markov models, switching Poisson (SP) process, Rank Surprise method, etc. The most recent applications are capable of adaptive event detection by incorporating Bayesian learning to Poisson models. We didn&#8217;t have much time, and after identifying a set of algorithms that might do the job for us, we did a search for ready to hand implementations in R. We found a recently released <a href='http://cran.r-project.org/web/packages/bursts/index.html'>R package that applies Kleinberg&#8217;s burst detection algorithm</a>, and given that was available we decided to apply that. The data we had prepared was not in exactly the right format, so we wrote one more data processing step to wrangle the data a bit more, and we ran the algorithm on some real data.</p>
+<img height='50%' src='https://lh5.googleusercontent.com/-gEVChjytyI8/UJdEyzimduI/AAAAAAAAqKc/pP4rv0uXhtI/s860/20121103-P1100604.jpg' />
+<h2 id='results'>Results</h2>
+
+<p>We hoped to find a sampling of bursts then to visualize in order to study the spike train and its event arrival intervals. No bursts were identified from our data set when we implemented the program. Whether this was due to the technical implementation of the algorithm; the data; or the suitability of the algorithm, we need to conduct further preliminary work such as testing this model with a simpler method that examines the variance of article activity change across the corpus. We hope to continue to build an open source, automatic ALM burst detection tool that can be used across altmetrics providers.</p>
+
+<h2 id='resources'>Resources</h2>
+
+<p>The code we generated is on <a href='https://github.com/SChamberlain/altgaming'>github</a>. We used the literature in the <a href='http://www.mendeley.com/groups/2732131/burst-detection/'>Mendeley burst detection group</a> to help focus on algorithms that might help. The data sets that we generated are in a <a href='https://www.dropbox.com/sh/wrev1s6ryex8ib5/KjzcPDk7m6'>dropbox folder</a>. We generated one <a href='https://www.dropbox.com/s/76fq0jb17oqz6mq/dataset_larger.zip'>large dataset</a> that can be used for testing algorithms against, however it will need to be converted into time series sub-data sets.</p>
+
+<h3 id='some_takeaways'>Some takeaways</h3>
+
+<p>A lot of our time during the hack was spent getting data. In the end we had about three data sets floating around, with some differences in the scale of time that they covered, and the sources of information that were in them. A lot time was spent manipulating the data to generate a time series set in the right format for the algorithm we wanted to run, and we also ran into a few limitations of the API. One outcome is that our work picked up a bug in the PLOS ALM API which is now being fixed!</p>
+
+<p>It was fun working in a small group, I&#8217;ve previously been involved in a couple of hackathons where I ended up working on my own ideas, still fun, but not as much fun.</p>
+
+<p>Even with a really tightly focussed group, with the number of data sets that we had, we kept talking cross purposes about what was, or was not, in a specific data set. Communication is hard!!</p>
+
+<p>We applied a state of the art algorithm, and ran into some difficulty because we didn&#8217;t really understand the domain of applicability of the algorithm. but from my own personal point of view, even though we didn&#8217;t</p>
+
+<p>In terms of being productive at a hackathon, I think next time have a data set in the format you want it in, or an API in the format you want it in, leaves you in a better starting position, so either get the data ready before hand, or restrict the scope of what you are going to do, to ideas that interface really well with the format of the data that you have to hand.</p>
+
+<h2 id='whats_next'>What&#8217;s next?</h2>
+
+<p>We could see, in an infamous paper about bats, that there were a couple of clear spikes of attention, so we know, a-priori, that there are events that show up in the kind of data that we have access to. We know that it would be interesting to be able to automate both the retrospective discovery of these kinds of events, and the ability to analyse a live stream of signals to see upticks in activity. We know that there are a bunch of algorithms out there that are well tuned to this task, so there is good scope to iterate on this work and set up some nice clean stream data, and some data work-flows for generating this kind of data from available APIs, while at the same time finding a suite of algorithms to toss the data at. At the same time there was a lot of discussion around how to understand the context of ALM numbers, or events, and we need to keep an eye on what it all means, and whether the events we might be able to pick up can be related to things happening in the real world.</p>
+
+<p>(As a personal aside, I&#8217;ve been interested in Kleinberg&#8217;s algorithm since about 2007, but I never had the mathematical chops to code up my own version of the algorithm, and I never got the perl version to run, so I was delighted to find a package that I could try out, even if, in the end, it didn&#8217;t work. - Ian).</p>
+
+<ul>
+<li><a href='https://twitter.com/recology_'>Scott Chamberlain</a></li>
+
+<li><a href='http://www.plos.org/staff/jennifer-lin/'>Jennifer Lin</a></li>
+
+<li><a href='http://www.mulvany.net'>Ian Mulvany</a></li>
+
+<li><a href='http://www.linkedin.com/pub/brian-naughton/2/505/975'>Brian Naughton</a></li>
+
+<li><a href='http://nitens.org/taraborelli/home'>Dario Taraborelli</a></li>
+</ul>
+</div>
 
 
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
         </article>
       </div>
     </div>
